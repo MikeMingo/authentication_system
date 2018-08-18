@@ -5,6 +5,12 @@
  */
 package fileserver;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+
 
 /**
  *
@@ -14,11 +20,13 @@ public class AuthSystem {
     
     private String userName;
     private String userPass;
+    private String[] credArray;
     
     //Constructor for class AuthSystem
     public AuthSystem() {
         userName = null;
         userPass = null;
+        credArray =null;
     }
     
     //BEGIN METHODS
@@ -38,6 +46,23 @@ public class AuthSystem {
     //Getter for variable userPass in class AuthSystem
     public String getPassword() {
         return userPass;
+    }
+    
+    public void setCredArray(String fileName) throws FileNotFoundException, IOException{
+        String bufferString = "";
+        String tempSplit = "";
+        FileReader readFile = new FileReader(fileName);
+        BufferedReader fileBuffer = new BufferedReader(readFile);
+        while ((bufferString = fileBuffer.readLine()) != null) {
+            tempSplit += bufferString + "\n";
+        }
+        credArray = tempSplit.trim().split(" ");
+        System.out.print(Arrays.toString(credArray));
+        
+    }
+    
+    public String getCredArray(int number) {
+        return credArray[number];
     }
     
     
