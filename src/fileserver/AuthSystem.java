@@ -6,10 +6,12 @@
 package fileserver;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 
 /**
@@ -20,13 +22,14 @@ public class AuthSystem {
     
     private String userName;
     private String userPass;
+    private String credentials;
     private String[] credArray;
     
     //Constructor for class AuthSystem
     public AuthSystem() {
         userName = null;
         userPass = null;
-        credArray =null;
+        credentials ="";
     }
     
     //BEGIN METHODS
@@ -48,22 +51,31 @@ public class AuthSystem {
         return userPass;
     }
     
-    public void setCredArray(String fileName) throws FileNotFoundException, IOException{
-        String bufferString = "";
-        String tempSplit = "";
-        FileReader readFile = new FileReader(fileName);
-        BufferedReader fileBuffer = new BufferedReader(readFile);
-        while ((bufferString = fileBuffer.readLine()) != null) {
-            tempSplit += bufferString + "\n";
-        }
-        credArray = tempSplit.trim().split(" ");
-        System.out.print(Arrays.toString(credArray));
-        
+    public int indexOfUsername (String name) {
+        return Arrays.asList(credArray).indexOf(name);
+
     }
     
-    public String getCredArray(int number) {
+    public void setCred(String fileName) throws FileNotFoundException, IOException{
+        File credFile = new File(fileName);
+        Scanner credScan = new Scanner(credFile);
+        while (credScan.hasNextLine()) {
+            credentials += credScan.next();
+            credentials += " ";
+        
+        }
+        credArray = credentials.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+    }
+    
+    public String getCredAtIndex(int number) {
+   
         return credArray[number];
     }
+    
+    public String getCred() {
+        return credentials;
+    }
+    
     
     
     //METHODS PERTAINING TO FILE OPERATION

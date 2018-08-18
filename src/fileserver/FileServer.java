@@ -27,7 +27,7 @@ public class FileServer {
     public FileServer() {
         
         readFile = null;
-        fileBuffer =null;
+        fileBuffer = null;
         
         
         
@@ -57,8 +57,10 @@ public class FileServer {
         System.out.print(fs.output);
         as.setUsername("mike");
         System.out.println(as.getUsername());
-        as.setCredArray("credentials.txt"); 
-        System.out.print(as.getCredArray(0));
+        as.setCred("credentials.txt"); 
+        System.out.println(as.getCred());
+        System.out.println(as.getCredAtIndex(as.indexOfUsername("bernie.gorilla")+2));
+        System.out.println(as.indexOfUsername("rosario.dawson"));
         
     }
     
