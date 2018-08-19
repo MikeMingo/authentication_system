@@ -5,14 +5,12 @@
  */
 package fileserver;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.BufferedReader;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -169,17 +167,21 @@ public class FileServer {
                 System.out.println();
                 System.out.println("Welcome " + as.getUsername() + "!");
                 System.out.println();
+                //ASSOCIATE role file with user
                 System.out.println("Retrieving " + as.getCredAtIndex(as.indexOfUsername() + 3) + " file.");
                 System.out.println();
+                //OPEN DISPLAY CLOSE file
                 System.out.println(fs.read(as.getCredAtIndex(as.indexOfUsername() + 3)));
+                //GET user input for logout
                 fs.setMenuOption();
             }
             else{
+                //increment total attempts
                 fs.setFailCount();
             }
         }
         
-        
+        //DISPLAY logout feedback to user
         if (fs.getFailCount() > 2) {
             System.out.println();
             System.out.println("YOU HAVE BEEN LOCKED OUT OF THE AUTHENTICATION SYSTEM!");

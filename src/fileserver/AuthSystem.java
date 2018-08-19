@@ -5,10 +5,8 @@
  */
 package fileserver;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -24,14 +22,12 @@ public class AuthSystem {
     private String userPass;
     private String credentials;
     private String[] credArray;
-    private int failCount;
     
     //Constructor for class AuthSystem
     public AuthSystem() {
         userName = null;
         userPass = null;
         credentials ="";
-        failCount = 0;
     }
     
     //BEGIN METHODS
