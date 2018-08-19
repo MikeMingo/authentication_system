@@ -14,7 +14,7 @@ import java.util.Scanner;
  * @author mingo
  */
 public class AuthSystem {
-    
+    // initializing variables for class
     private String userName = null;
     private String userPass = null;
     private String credentials = "";
@@ -27,9 +27,6 @@ public class AuthSystem {
 
     }
     
-    //BEGIN METHODS
-    
-   
     
     /**
      * This method is used to prompt the user for input

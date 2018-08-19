@@ -7,7 +7,8 @@ import java.security.NoSuchAlgorithmException;
 /**
  * This class implements hash functions.
  * Currently, the class only supports MD5 hash codes.
- *
+ * class provided to it-145 class by instructor
+ *@author John Graham
  */
 public class HashGenerator {
 

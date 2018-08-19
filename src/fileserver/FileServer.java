@@ -10,33 +10,34 @@ import java.io.BufferedReader;
 import java.util.Scanner;
 
 /**
- *
+ *This class opens files associated with users while
+ * controlling operational flow of the program through
+ * decision trees
  * @author mingo
  */
 public class FileServer {
-    
-    private FileReader readFile;
+    //initializing variables for class
+    private FileReader readFile = null;
     private String output ="";
-    private BufferedReader fileBuffer;
-    private String menuOption;
-    private int failCount;
+    private BufferedReader fileBuffer = null;
+    private String menuOption = "r";
+    private int failCount = 0;
     
-    
+    /**
+     * Default constructor
+     */
     public FileServer() {
-        
-        readFile = null;
-        fileBuffer = null;
-        menuOption = "r";
-        failCount = 0;
-    
-        
-        
-        
-        
-        
+       
     }
-    //BEGIN FILE METHODS
     
+    /**
+     * This method opens a file based on input and passes
+     * information to the string variable output using a 
+     * buffered reader before closing the file
+     * @param fileName
+     * @exception FileNotFoundException
+     * @return String output
+     */
     public String read(String fileName)  {
         String bufferString;
         output = "";
@@ -60,7 +61,10 @@ public class FileServer {
         }
         return output;
     }
-    
+    /**
+     * This method increments the integer variable failCount and 
+     * notifies the user of remaining login attempts
+     */
     public void setFailCount() {
         System.out.println();
         System.out.println("Username/Password combination incorrect.");
@@ -77,11 +81,19 @@ public class FileServer {
         }
         
     }
-    
+     /**
+      * This method retrieves the current value of variable failCount
+      * @return integer
+      */
      public int getFailCount() {
         return failCount;
     }
-    
+    /**
+     * This method requests input from user and uses that input
+     * to choose an action to perform between allowing a new
+     * login or ending the session  user will be prompted for input 
+     * until the correct input is received
+     */
     public void setMenuOption() {
         int menuToggle = 0;
         Scanner menuScan = new Scanner(System.in);
@@ -116,7 +128,11 @@ public class FileServer {
         }
         
     }
-    
+    /**
+     * This method gets the current string value of menuOption
+     * used to allow termination of program
+     * @return String menuOption
+     */
     public String getMenuOption(){
         return menuOption;
     }
@@ -166,6 +182,7 @@ public class FileServer {
                 //ASSOCIATE role file with user
                 System.out.println("Retrieving " + as.getCredAtIndex(as.indexOfUsername() + 3) + " file.");
                 System.out.println();
+                System.out.println();
                 //OPEN DISPLAY CLOSE file
                 System.out.println(fs.read(as.getCredAtIndex(as.indexOfUsername() + 3)));
                 //GET user input for logout
@@ -177,7 +194,7 @@ public class FileServer {
             }
         }
         
-        //DISPLAY logout feedback to user
+        //DISPLAY logout feedback to user depending on type
         if (fs.getFailCount() > 2) {
             System.out.println();
             System.out.println("YOU HAVE BEEN LOCKED OUT OF THE AUTHENTICATION SYSTEM!");
