@@ -23,11 +23,16 @@ public class FileServer {
     private FileReader readFile;
     private String output ="";
     private BufferedReader fileBuffer;
+    private String menuOption;
+    
     
     public FileServer() {
         
         readFile = null;
         fileBuffer = null;
+        menuOption = "r";
+    
+        
         
         
         
@@ -36,13 +41,20 @@ public class FileServer {
     //BEGIN FILE METHODS
     
     public String read(String fileName) throws IOException {
-        String bufferString = "";
+        String bufferString;
         readFile = new FileReader(fileName);
         fileBuffer = new BufferedReader(readFile);
         while ((bufferString = fileBuffer.readLine()) != null) {
             output += bufferString + "\n";
         }
         return output;
+    }
+    public void setMenuOption() {
+        menuOption = "q";
+    }
+    
+    public String getMenuOption(){
+        return menuOption;
     }
     
     
@@ -51,17 +63,57 @@ public class FileServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        
+        //Starting instances of required classes
         FileServer fs = new FileServer();
         AuthSystem as = new AuthSystem();
-        fs.read("zookeeper.txt");
-        System.out.print(fs.output);
-        as.setUsername("mike");
-        System.out.println(as.getUsername());
-        as.setCred("credentials.txt"); 
-        System.out.println(as.getCred());
-        System.out.println(as.getCredAtIndex(as.indexOfUsername("bernie.gorilla")+2));
-        System.out.println(as.indexOfUsername("rosario.dawson"));
+        HashGenerator hg = new HashGenerator();
         
+        //READ credentials file
+        as.setCred("credentials.txt");
+        
+        //PRINT system greeting
+        System.out.println("ZOO AUTHENTICATION SYSTEM");
+        System.out.println();
+        
+        
+        //WHILE exit condition not met AND total attempts less than three
+        while (fs.getMenuOption() != "q" && as.getFailCount() < 3) {
+            
+            //GET username from user
+            as.setUsername();
+            
+            //GET Password from user
+            as.setPassword();
+            
+            //GET MD5hash and set hashes to comparable strings
+            String userHash = hg.getMD5Hash(as.getPassword());
+            String credHash = as.getCredAtIndex(as.indexOfUsername() + 1);
+            
+            //COMPARE credentials for validity
+            if (userHash.equals(credHash)) {
+                System.out.println();
+                System.out.println("Welcome " + as.getUsername() + "!");
+                System.out.println("Retrieving " + as.getCredAtIndex(as.indexOfUsername() + 3) + " file.");
+                System.out.println();
+                fs.read(as.getCredAtIndex(as.indexOfUsername() + 3) + ".txt");
+            }
+            else{
+                as.setFailCount();
+            }
+        }
+        
+        
+        if (as.getFailCount() > 2) {
+            System.out.println();
+            System.out.println("YOU HAVE BEEN LOCKED OUT OF THE AUTHENTICATION SYSTEM!");
+        }
+        else{
+            System.out.println();
+            System.out.println("LOGGING OUT OF AUTHENTICATION SYSTEM");
+        }
+       
     }
+    
     
 }
