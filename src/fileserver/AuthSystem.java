@@ -101,9 +101,4 @@ public class AuthSystem {
         return credArray[number].replaceAll("[^a-zA-Z0-9 .]","");
     }
     
-    public String getCred() {
-        return credentials;
-    }
-    
-    
 }
