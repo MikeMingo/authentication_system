@@ -35,25 +35,8 @@ public class AuthSystem {
     }
     
     //BEGIN METHODS
-    public void setFailCount() {
-        System.out.println();
-        System.out.println("Username/Password combination incorrect.");
-        failCount += 1;
-        System.out.println();
-        if ((3 - failCount) > 1) {
-            System.out.println("You have " + (3 - failCount) + " attempts remaining before lockout.");
-        }
-        else if ((3 - failCount) == 0){
-            System.out.println("You have " + (3 - failCount) + " attempts remaining, locking system.");
-        }
-        else {
-            System.out.println("You have " + (3 - failCount) + " attempt remaining before lockout.");
-        }
-        
-    }
-    public int getFailCount() {
-        return failCount;
-    }
+    
+   
     //Setter for variable userName in class AuthSystem
     public void setUsername() {
         System.out.println();

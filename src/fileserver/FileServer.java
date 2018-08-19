@@ -25,6 +25,7 @@ public class FileServer {
     private String output ="";
     private BufferedReader fileBuffer;
     private String menuOption;
+    private int failCount;
     
     
     public FileServer() {
@@ -32,6 +33,7 @@ public class FileServer {
         readFile = null;
         fileBuffer = null;
         menuOption = "r";
+        failCount = 0;
     
         
         
@@ -43,6 +45,7 @@ public class FileServer {
     
     public String read(String fileName)  {
         String bufferString;
+        output = "";
         try {
             readFile = new FileReader(fileName + ".txt");
         } catch (FileNotFoundException ex) {
@@ -63,6 +66,28 @@ public class FileServer {
         }
         return output;
     }
+    
+    public void setFailCount() {
+        System.out.println();
+        System.out.println("Username/Password combination incorrect.");
+        failCount += 1;
+        System.out.println();
+        if ((3 - failCount) > 1) {
+            System.out.println("You have " + (3 - failCount) + " attempts remaining before lockout.");
+        }
+        else if ((3 - failCount) == 0){
+            System.out.println("You have " + (3 - failCount) + " attempts remaining, locking system.");
+        }
+        else {
+            System.out.println("You have " + (3 - failCount) + " attempt remaining before lockout.");
+        }
+        
+    }
+    
+     public int getFailCount() {
+        return failCount;
+    }
+    
     public void setMenuOption() {
         int menuToggle = 0;
         Scanner menuScan = new Scanner(System.in);
@@ -83,6 +108,9 @@ public class FileServer {
                     break;
                 case "N":
                 case "n":
+                    System.out.println();
+                    System.out.println("Resetting Total Login Attempts.");
+                    failCount= 0;
                     System.out.println();
                     System.out.println("WELCOME TO THE ZOO AUTHENTICATION SYSTEM");
                     menuToggle = 1;
@@ -124,7 +152,7 @@ public class FileServer {
         
         
         //WHILE exit condition not met AND total attempts less than three
-        while (fs.getMenuOption() != "q" && as.getFailCount() < 3) {
+        while (!"q".equals(fs.getMenuOption()) && fs.getFailCount() < 3) {
             
             //GET username from user
             as.setUsername();
@@ -140,18 +168,19 @@ public class FileServer {
             if (userHash.equals(credHash)) {
                 System.out.println();
                 System.out.println("Welcome " + as.getUsername() + "!");
+                System.out.println();
                 System.out.println("Retrieving " + as.getCredAtIndex(as.indexOfUsername() + 3) + " file.");
                 System.out.println();
                 System.out.println(fs.read(as.getCredAtIndex(as.indexOfUsername() + 3)));
                 fs.setMenuOption();
             }
             else{
-                as.setFailCount();
+                fs.setFailCount();
             }
         }
         
         
-        if (as.getFailCount() > 2) {
+        if (fs.getFailCount() > 2) {
             System.out.println();
             System.out.println("YOU HAVE BEEN LOCKED OUT OF THE AUTHENTICATION SYSTEM!");
         }
