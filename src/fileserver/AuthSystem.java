@@ -24,35 +24,58 @@ public class AuthSystem {
     private String userPass;
     private String credentials;
     private String[] credArray;
+    private int failCount;
     
     //Constructor for class AuthSystem
     public AuthSystem() {
         userName = null;
         userPass = null;
         credentials ="";
+        failCount = 0;
     }
     
     //BEGIN METHODS
-    
+    public void setFailCount() {
+        System.out.println();
+        System.out.println("Username/Password combination incorrect.");
+        failCount += 1;
+        System.out.println();
+        if ((3 - failCount) >1){
+            System.out.println("You have " + (3 - failCount) + "attempts remaining before lockout.");
+        }
+        else{
+            System.out.println("You have " + (3 - failCount) + "attempt remaining before lockout.");
+        }
+        
+    }
+    public int getFailCount() {
+        return failCount;
+    }
     //Setter for variable userName in class AuthSystem
-    public void setUsername(String name) {
-        userName = name;
+    public void setUsername() {
+        System.out.println();
+        System.out.println("Enter Username: ");
+        Scanner nameScan = new Scanner(System.in);
+        userName = nameScan.nextLine();
     }
     //Getter for variable userName in class AuthSystem
     public String getUsername() {
         return userName;
     }
     //Setter for variable userPass in class AuthSystem
-    public void setPassword(String password) {
-        userPass = password;
+    public void setPassword() {
+        System.out.println();
+        System.out.println("Enter Password: ");
+        Scanner passScan = new Scanner(System.in);
+        userPass = passScan.nextLine();
     }
     //Getter for variable userPass in class AuthSystem
     public String getPassword() {
         return userPass;
     }
     
-    public int indexOfUsername (String name) {
-        return Arrays.asList(credArray).indexOf(name);
+    public int indexOfUsername () {
+        return Arrays.asList(credArray).indexOf(userName);
 
     }
     
@@ -69,7 +92,7 @@ public class AuthSystem {
     
     public String getCredAtIndex(int number) {
    
-        return credArray[number];
+        return credArray[number].replaceAll("[^a-zA-Z0-9 .]","");
     }
     
     public String getCred() {
