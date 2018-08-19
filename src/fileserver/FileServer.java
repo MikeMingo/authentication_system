@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.BufferedReader;
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  *
@@ -40,17 +41,58 @@ public class FileServer {
     }
     //BEGIN FILE METHODS
     
-    public String read(String fileName) throws IOException {
+    public String read(String fileName)  {
         String bufferString;
-        readFile = new FileReader(fileName);
+        try {
+            readFile = new FileReader(fileName + ".txt");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FileServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
         fileBuffer = new BufferedReader(readFile);
-        while ((bufferString = fileBuffer.readLine()) != null) {
-            output += bufferString + "\n";
+        try {
+            while ((bufferString = fileBuffer.readLine()) != null) {
+                output += bufferString + "\n";
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(FileServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            readFile.close();
+        } catch (IOException ex) {
+            Logger.getLogger(FileServer.class.getName()).log(Level.SEVERE, null, ex);
         }
         return output;
     }
     public void setMenuOption() {
-        menuOption = "q";
+        int menuToggle = 0;
+        Scanner menuScan = new Scanner(System.in);
+        System.out.println();
+        System.out.println("What would you like to do?");
+        System.out.println();
+        System.out.println("(N)ew User / (E)nd Session");
+        System.out.println();
+        while (menuToggle != 1) {
+            menuOption = menuScan.next();
+            if (null == menuOption) {
+                System.out.println("Please enter either 'N' or 'E':");
+            }else switch (menuOption) {
+                case "E":
+                case "e":
+                    menuOption = "q";
+                    menuToggle = 1;
+                    break;
+                case "N":
+                case "n":
+                    System.out.println();
+                    System.out.println("WELCOME TO THE ZOO AUTHENTICATION SYSTEM");
+                    menuToggle = 1;
+                    break;
+                default:
+                    System.out.println("Please enter either 'N' or 'E':");
+                    break;
+            }
+        }
+        
     }
     
     public String getMenuOption(){
@@ -62,18 +104,22 @@ public class FileServer {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         
         //Starting instances of required classes
         FileServer fs = new FileServer();
         AuthSystem as = new AuthSystem();
         HashGenerator hg = new HashGenerator();
         
-        //READ credentials file
-        as.setCred("credentials.txt");
+        try {
+            //READ credentials file
+            as.setCred("credentials.txt");
+        } catch (IOException ex) {
+            Logger.getLogger(FileServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         //PRINT system greeting
-        System.out.println("ZOO AUTHENTICATION SYSTEM");
+        System.out.println("WELCOME TO THE ZOO AUTHENTICATION SYSTEM");
         System.out.println();
         
         
@@ -96,7 +142,8 @@ public class FileServer {
                 System.out.println("Welcome " + as.getUsername() + "!");
                 System.out.println("Retrieving " + as.getCredAtIndex(as.indexOfUsername() + 3) + " file.");
                 System.out.println();
-                fs.read(as.getCredAtIndex(as.indexOfUsername() + 3) + ".txt");
+                System.out.println(fs.read(as.getCredAtIndex(as.indexOfUsername() + 3)));
+                fs.setMenuOption();
             }
             else{
                 as.setFailCount();

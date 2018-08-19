@@ -40,11 +40,14 @@ public class AuthSystem {
         System.out.println("Username/Password combination incorrect.");
         failCount += 1;
         System.out.println();
-        if ((3 - failCount) >1){
-            System.out.println("You have " + (3 - failCount) + "attempts remaining before lockout.");
+        if ((3 - failCount) > 1) {
+            System.out.println("You have " + (3 - failCount) + " attempts remaining before lockout.");
         }
-        else{
-            System.out.println("You have " + (3 - failCount) + "attempt remaining before lockout.");
+        else if ((3 - failCount) == 0){
+            System.out.println("You have " + (3 - failCount) + " attempts remaining, locking system.");
+        }
+        else {
+            System.out.println("You have " + (3 - failCount) + " attempt remaining before lockout.");
         }
         
     }
